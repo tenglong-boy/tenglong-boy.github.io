@@ -5,7 +5,7 @@ date:   2020-05-28 21:03:36
 categories: linux
 ---
 ```
-## 目录操作命令
+	## 目录操作命令
 1. 显示目录下内容
 	ls	
 	ls	-l	长格式显示
@@ -96,7 +96,6 @@ categories: linux
     	r	读	4
     	w	写	2
     	x	执行	1
-
 21. 修改权限
     chmod	u+x	aa
     chmod	u-x	aa
@@ -104,17 +103,14 @@ categories: linux
     chmod	u=rwx	aa
     chmod	755	aa
     chmod	644	aa
-
 22. 权限对文件的含义
     r:读取文件内容	cat	more	head	tail
     w:编辑,新增,修改文件内容,但不包含删除文件	vi	echo
     x(最高权限):可执行
-
 23. 权限对目录的含义
     r:可以查询目录下文件名
     w(最高权限):具有修改目录结构的权限,如新增文件和目录,删除此目录下文件和目录,重命名此目录下文件和目录	touch	rm	mv	cp
     x:可以进入目录	cd
-
 24. 所有者和所属组
     chown	用户名	文件名	(改变文件所有者)
     chown	user1	aa	(user1必须存在)
@@ -122,7 +118,6 @@ categories: linux
     useradd	用户名	(添加用户)
     passwd	用户名	(设定用户密码)
     chgrp	所属组	文件名	(改变所属组)
-
 25. 文件和目录默认权限
     umask
 	文件:		666			0022				644
