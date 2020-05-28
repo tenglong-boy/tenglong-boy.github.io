@@ -1,0 +1,390 @@
+---
+layout: post
+title:  "linux目录操作命令"
+date:   2020-05-28 21:03:36
+categories: linux
+---
+```
+## 目录操作命令
+1. 显示目录下内容
+	ls	
+	ls	-l	长格式显示
+	ls	-a	显示所有文件(包含隐藏文件)
+	ls	-h	以常用单位显示文件大小
+	ls	-d	只显示目录,不显示目录下子文件
+	ls	-i	显示文件inode号
+2. linux 命令提示符
+	[root@localhost/]#
+	[当前登入用户@当前主机名 当前所在目录的最后一个目录]#
+3. 切换所在目录
+	cd	
+	相对路径:参照当前所在目录,进行查找.[root]#cd ../usr/local/src
+	绝对路径:从根目录开始指定,一级一级递归查找.cd /usr/local/src
+	cd	~	(进入当前用户的家目录)
+	cd	-	(进入上次目录)
+	cd	..	(进入上一级目录)
+	cd	.	(进入当前目录)
+4. 显示当前所在目录
+	pwd	
+5. 建立目录
+	mkdir	目录名	
+    mkdir	-p	11/22/33/44	(递归建立目录)
+6. 删除目录
+	rmdir	目录	(只能删除空目录)
+	rm	文件名	(删除文件)
+	rm	-rf	目录	(删除文件和目录)
+	rm	-r	11/22/33/44	(递归删除目录)
+	rm	-f	目录	(强制删除)
+7. 目录名显示指定目录下所有内容的目录树
+	tree
+## 文件操作命令
+8. 创建空文件或修改文件时间
+	touch	文件名
+9. 删除
+	rm	-rf	文件名
+10. 查看文件内容,从头到尾
+	cat	文件名
+	cat	-n	文件名	(列出行号)
+11. 分屏显示文件内容
+	more	文件名
+	空格向下翻页	b向上翻页	q退出
+12. 分行显示文件内容
+	less	文件名
+13. 显示头文件
+	head	文件名
+	head	-n	行数	文件名	(指定显示文件头几行)
+	head	-n	20	文件名
+14. 显示尾文件
+	tail	-n	行数	文件名
+	tail	-f	文件名	(监听文件尾,不退出,适合监听实时文件)
+## 文件和目录都能操作的命令
+15. 删除目录或文件
+	rm	文件名或目录名
+16. 复制
+	cp	原文件	存储目标位置
+	cp	-r(复制目录)	原文件	存储目标位置
+	cp	-p(连带文件属性复制)	原文件	存储目标位置
+	cp	-d(若原文件是链接文件,则复制链接属性)
+	cp	-a(相当于-pdr)
+	cp	aa	/tmp/	(原名复制)
+	cp	aa	/tmp/bb	(改名复制)
+17. 剪切或改名
+	mv	原文件	存储目标位置
+	mv	/root/aa	/tmp/	(root下的aa剪切到tmp下)
+	mv	aa	bb	(aa改名为bb)
+18. 命令解释器
+	shell
+	内部命令	shell自带的,没有明确的可执行文件
+	外部命令	后期开发,有可执行文件
+	type	命令名	(区分命令类型)
+19. 链接文件
+	硬链接:	ln	原文件	目标文件
+	软连接:	ln	-s	原文件	目标文件	(文件名都必须写绝对路径)
+## 权限管理
+20. 权限位
+    -rw-r--r--	1	root  root	0.08-11  01:45 aa
+    权限位是十位
+    第一位:	代表文件类型
+    	-	普通文件
+    	d	目录文件
+    	l	链接文件
+    	b	块设备文件
+    	c	字符设备文件
+    	s	套接字
+    	p	管道
+    九位	所有者u	所属组g	其他人o
+    	r	读	4
+    	w	写	2
+    	x	执行	1
+
+21. 修改权限
+    chmod	u+x	aa
+    chmod	u-x	aa
+    chmod	g+w,0+w	aa
+    chmod	u=rwx	aa
+    chmod	755	aa
+    chmod	644	aa
+
+22. 权限对文件的含义
+    r:读取文件内容	cat	more	head	tail
+    w:编辑,新增,修改文件内容,但不包含删除文件	vi	echo
+    x(最高权限):可执行
+
+23. 权限对目录的含义
+    r:可以查询目录下文件名
+    w(最高权限):具有修改目录结构的权限,如新增文件和目录,删除此目录下文件和目录,重命名此目录下文件和目录	touch	rm	mv	cp
+    x:可以进入目录	cd
+
+24. 所有者和所属组
+    chown	用户名	文件名	(改变文件所有者)
+    chown	user1	aa	(user1必须存在)
+    chown	user1:user1	aa	(改变所有者和所属组)
+    useradd	用户名	(添加用户)
+    passwd	用户名	(设定用户密码)
+    chgrp	所属组	文件名	(改变所属组)
+
+25. 文件和目录默认权限
+    umask
+	文件:		666			0022				644
+		-wr-wr-wr-	减去	-----w--w-	等于	-wr--r--r-
+	umask	(查看系统umask值)
+	umask	0002	(临时修改umask值)
+## 查找命令
+26. 查看命令的帮助
+	man  命令名
+	man	5	passwd	(查看配置文件的帮助)
+	man的级别
+		1:查看命令的帮助
+		2:查看可被内核调用的函数的帮助
+		3:查看函数和函数库的帮助
+		4:查看特殊文件的帮助(主要是/dev目录下的文件)
+		5:查看配置文件的帮助
+		6:查看游戏的帮助
+		7:查看其他杂项的帮助
+		8:查看系统管理员可用命令的帮助
+		9:查看和内核相关文件的帮助
+	man	-f	命令	或	whatis	命令	(查看命令拥有哪个级别的帮助)
+	man	-k	命令	或	apropos	命令	(查看和命令相关的所有帮助)
+27. 查看内部命令帮助
+	help	内部命令
+28. 查看命令的常见选项
+	命令	--help
+29. info	命令
+	回车:	进入帮助页面(带有*号标记)
+	u	进入上层页面
+	n	进入下一个帮助小节
+	p	进入上一个帮助小节
+	q	退出
+30. 查找命令
+	which	命令名	(查找命令的命令,能看到相关别名)
+	whereis	命令名	(查找命令的命令,同时看到帮助文档位置)
+	locate	文件名	(按照文件名查找,按照数据库查找)
+	updatedb	(强制更新数据库)
+	/var/lib/mlocate	locate命令所搜索的后台数据库
+	/etc/updatedb.conf	配置文件,用于定义locate命令
+	PRUNE_BIND_MOUNTS="yes"	开启搜索限制
+	PRUNEFS=	搜索时,不搜索的文件系统
+	PRUNENAMES=	搜索时,不搜索的文件类型
+	PRUNEPATHS=	搜索时,不搜索的路径
+31. find	搜索命令
+	按照文件名查找
+		find	查找位置	-name	文件名
+		find	/	-name	aabbc	(按照文件名查找)
+	按照时间查找
+		find	查找位置	-ctime(文件状态修改时间,单位:天)	+4
+		find	/	-ctime	+4
+		find	查找位置	-mtime(文件数据修改时间)	-4
+        find	/	-mtime	-4
+        find	查找位置	-atime(访问时间)	4
+        find	/	-atime	4
+    按照用户查找
+    	find	/	-uid	数字	(用户所有者id查找文件)
+    	find	/	-gid	数字	(用户所属组id查好文件)
+    	find	/	-user	用户名	(所有者用户名查找文件)
+    	find	/	-group	组名	(所属组组名查找文件)
+    	find	/	-nouser	(查找没有所有者的文件)
+    按照文件权限查找
+    	find	/	-name	文件名	(文件名查找)
+    	find	/	-size	+50k(大于50k)	(文件大小查找)
+    	find	/	-size	-50k(小于50k)	(文件大小查找)
+		find	/	-size	50k(等于50k)	(文件大小查找)
+		find	/	-type	f(普通)	(文件类型查找)
+		find	/	-type	d(目录)	(文件类型查找)
+		find	/	-type	l(链接)	(文件类型查找)
+		find	.	-perm	644	(权限查找)
+		find	.	-inum	节点数	(i节点查找)
+		find	.	-iname	文件名	(文件名查找,不区分大小写)
+	在查找出的结果中,直接进行命令操作
+		find	/var/logs/	-mtime	+10	-exec	rm	-rf	{}\;
+		find	.	inum	1140247	-exec	ls	-l	{}\;
+		find	.	-size	+5k	-a	-size	6k
+		find	/var/logs/	-mtime	+10	-ok(是否执行)	rm	-rf	{}\;
+		find	.	inum	1140247	-ok(是否执行)	ls	-l	{}\;
+		find	.	-size	+5k	-a	-size	6k
+32. grep	"字符串"	文件名	(查找符合条件的字串行)
+	grep	-i(忽略大小写)	"root"	/etc/passwd
+	grep	-v(反向选择)	"root"	/etc/passwd
+	|	(管道符)
+		cat	install.log	|	grep	lib	(在显示文件的结果中,grep搜索含有lib的行)
+		命令1	|	命令2	(命令1的结果,作为命令2的执行条件)
+33. 查看系统网络状态
+	netstat
+		netstat	-t	(查看tcp协议端口)
+		netstat	-u	(查看udp)
+		netstat	-l	(监听)
+		netstat	-n	(以ip和端口号显示,而不是主机名和协议名)
+## 通配符和正则表达式
+find	在系统中,搜索符合条件的文件名
+	find	路径	选项	"对象名称"
+	使用	通配符
+	完全匹配
+grep	在文件当中,搜索符合条件的字符串的
+	grep	"内容"	"对象名"
+	使用正则
+	包含匹配
+通配符(find)	操作文件名
+	*	任意内容
+	?	任意一个内容
+	[]	中括号内任意一个内容[abc][0-9][a-z][A-Za-z]
+正则表达式(grep)	操作字符串,包含匹配
+	*	前一个字符重复任意多次
+	?	前一个字符出现0次或者1次
+	[]	中括号内任意一个内容
+	^	表示以什么开头
+	$	表示以什么结尾
+	grep	识别?和+需加-E或egrep
+## 压缩和解压缩
+34. linux可以识别的压缩格式
+	.zip	.gz	.bz2
+35. .zip格式
+	zip	压缩之后产生的包名	原文件	(压缩)
+		zip	-r(压缩目录)	test.zip	/test	(压缩)
+	unzip	压缩包	(解压缩)
+36. .gz格式	(不会打包)
+	gzip	原文件	(压缩)
+	gzip	-c	原文件	>	压缩文件	(压缩为.gz格式,原文件保留)
+		gzip	-c	cangls	>	cangls.gz
+	gzip	-r	原目录	(不能压缩目录,压缩目录下所有内容)
+	gzip	-d	压缩包	(解压缩)
+	gunzip	压缩包	(解压缩)
+37. .bz2格式	(不能压缩目录)
+	bzip2	原文件	(压缩)
+		bzip2	aa	(压缩aa)
+	bzip2	-k	原文件	(压缩之后保留原文件)
+	bzip2	-d	压缩文件包	(解压缩)
+		bzip2	-d	aa.bz2	(解压缩aa)
+	bunzip2	压缩文件	(解压缩)
+	bunzip2	-k	压缩文件	(解压缩,保留压缩文件)
+38. tar	(打包命令,不压缩)
+	tar	-cvf	打包文件名	原文件	(打包)
+		tar	-cvf	aa.tar	aa
+		-c(打包)	-v(显示打包过程)	-f(指定生产后的文件名)
+	tar	-xvf	打包文件名	(解打包)
+		tar	-xvf	aa.tar	(解打包)
+		-x(解打包)
+	tar	-zcvf	压缩文件名	原文件	(压缩同时打包)
+		tar	-zcvf	aa.tar.gz	aa	(压缩打包aa)
+		-z(识别.gz格式)
+	tar	-zxvf	压缩文件名	(解压缩同时解打包)
+	tar	-jcvf	压缩文件名	原文件	(压缩同时打包)
+		tar	-jcvf	aa.tar.bz2	aa	(压缩打包aa)
+	tar	-jxvf	压缩文件名	(解打包解压缩)
+		tar	-jxvf	aa.tar.bz2	(解压缩解打包aa)
+	tar	-ztvf	aa.tar.gz	(查看不解包)
+	tar	-jtvf	aa.tar.bz2	(查看不解包)
+	-t(只查看,不解压)
+	tar	-jxvf	root.tar.bz2	-C	/tmp/	(指定解压缩位置)
+## 常用网络命令
+	w	(查询当前登录服务器的所有用户)
+		第一行	开机时间	登录时间	登录了几个用户	1分钟前的平均负载	5分钟前的平均负载	15分钟前的平均负载
+		第二行	用户名	tty:登录终端	来源ip	登录持续时间	idle:用户闲置时间	jcpu:所有进程占用CPU时间	pcpu:当前进程占用CPU时间	what:用户正在进行的操作
+	who	(查询登录用户)
+	lsat	(列出登录系统的相关消息)
+	lastlog	(显示所有账户最后一次的登录时间)
+	write	用户名	(给在线用户写信息)
+		write	root	tty1	(写内容给tty1登录的root)
+		ctrl+d	(保存,发送)
+	wall	(对所有在线用户说话)
+	mail	(邮件命令)
+		mail	回车	(收信)
+			l	2	(查看对应邮件)
+			h	(列出邮件标题)
+			q	(退出)
+		邮件保存:/var/spool/mail/root
+		mail	用户名	(发信)
+			标题
+			内容
+			ctrl+d	(发送)
+	ping	(测试网络连通性)
+		ping	-c	次数	ip	(探测网络通畅)
+		ping	-s	65536	ip	(指定探测数据包的大小)
+		虚拟机不同:
+			确定IP地址
+			防火墙
+			确定虚拟机网卡连接方式
+	ifconfig	(查询本机网络信息)
+		ifconfig	eth0	192.168.140.252	netmask	255.255.255.0
+		eth0	eth0:0(第一块网卡的第一模拟网卡)
+	netstat	(查看网络状态)
+		常见网络端口:
+			20	21	ftp服务	文件共享
+			22	ssh服务	安全远程网络管理
+			23	telnet服务
+			25	smtp:	简单邮件传输协议	发信
+			110	pop3:	邮局协议	收信
+			80	www	网页服务
+			3306	mysql端口
+			3389	windows终端服务
+			53	DNS端口
+			/etc/services	所有系统常见端口
+			端口数量	tcp	65535	udp	65535
+			telnet	ip	端口	测试端口是否可以正常连接
+				ctrl+]	-----------	quit	退出方式
+			netstat	-tlun	查看本机所有监听端口
+				-t	tcp	-u	udp	-l	监听	-n	以ip和端口号显示
+## 关机	重启命令
+39. 关机命令
+	sync	数据同步,把内存中数据,强制保存进硬盘
+	shutdown	-h	now	没有特殊情况,使用此命令
+	init	0	不保存数据
+	halt	不保存数据
+	poweroff	相当于断电
+40. 重启命令
+	shutdown	-r	now	识别小时分钟,可以定时关机重启,不推荐ctrl+c中断
+	reboot	会正确关闭服务
+	init	6
+	只有shutdown才能正确的关闭我的服务,保存数据在关机和重启
+## 挂载命令
+linux所有存储设备都必须挂载使用,包括硬盘
+使用开机自动挂载可能会报错,尽量手动挂载
+41. mount
+	mount	[-l]	(查询系统中已经挂载的设备,-l会显示卷标名称)
+	mount	-a	(依据配置文件/etc/fstab的内容,自动挂载)
+	mount	[-t文件系统]	[-l卷标名称]	[-o特殊选项]	设备文件名	挂载点
+42. 挂载
+	把设备文件和挂载点连接在一起
+43. 光盘挂载
+	mkdir	/mnt/cdrom	创建挂载点
+	设备文件名:
+		redhat5以前	/dev/hdc
+		redhat6	/dev/sr0
+	软链接
+		/dev/cdrom	也可作为设备文件名,需要系统完全启动才生效,不推荐
+	mount	-t	iso9600	/dev/sr0	/mnt/cdrom
+		iso9600	可省略
+	cd	/mnt/cdrom	访问光盘内容
+44. 卸载光盘
+	前提:先退出光盘cd
+	unmount	/mnt/cdrom/	(卸载光盘)
+	umount	/dev/cdrom/	(卸载光盘)
+45. 挂载U盘
+只识别fat32以下的文件系统
+设备文件名:和硬盘共用命名方式,所以不是固定的
+	fdisk	-l		(查U盘的设备文件名)
+U盘不识别,看真实机的服务
+创建挂载点
+	mkdir	/mnt/usb
+	mount	-t	vfat	/dev/sdb1/mnt/usb/
+	-t	vfat	(可省略)
+	cd/mnt/usb	(访问U盘内容)
+linux默认不识别ntfs格式,如果使用,必须重新编译内核,识别中文
+	mount	-o	iocharset=utf8	/dev/sdb1/mnt/usb/
+46. 卸载
+	umount	/dev/sdb1
+47. linux识别中文
+	安装了中文编码和中文字体
+	操作终端必须识别中文
+		纯文字界面不识别中文
+		远程工具和图形界面可以识别中文
+48. 驱动安装方式
+	linux不需要手动安装,因为内核里面有
+		除非内核里没有
+	常用驱动直接放入内核(必备硬件的驱动)	性能问题
+	不太用,绝大部分驱动,以模块方式放入硬盘
+		/lib/modules/2.6.32-642.el6.i686/kernel/	驱动存放
+		驱动以.ko结尾
+		以模块方式,系统默认没有安装
+			需手动重新编译内核,加载(NTFS文件系统的驱动属于这类)
+		linux彻底不识别驱动,需手动安装(需要厂商提供硬件驱动)
+​````
+```
